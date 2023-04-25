@@ -51,6 +51,7 @@ def main():
 
     accs = [ a for a in range(1, 11)] #加速度のリスト
 
+    """
     #(-1, 0):pg.transform.rotozoom(kk_img,0,1.0),
     #(-1, +1):pg.transform.rotozoom(kk_img,45,1.0),
     #(0, +1):pg.transform.rotozoom(kk_img,90,1.0),
@@ -59,7 +60,7 @@ def main():
     #(+1, -1):pg.transform.rotozoom(kk_img,225,1.0),
     #(0, -1):pg.transform.rotozoom(kk_img,270,1.0),
     #(-1, -1):pg.transform.rotozoom(kk_img,315,1.0),
-            
+    """
 
 
     tmr = 0
@@ -95,14 +96,14 @@ def main():
             vy *= -1 
         screen.blit(bb_img, bb_rct)  #練習３
         if kk_rct.colliderect(bb_rct): #練習６
-            kk_img = pg.image.load("ex02/fig/8.png")
-            kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-            gameover = True
-            overtime = tmr
+            kk_img = pg.image.load("ex02/fig/8.png")  #追加機能３
+            kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)  #追加機能３
+            gameover = True  #追加機能３
+            overtime = tmr  #追加機能３
 
-        if gameover == True:
-            if  tmr - overtime > 200:
-                return
+        if gameover == True:  #追加機能３
+            if  tmr - overtime > 200:  #追加機能３ 
+                return  #追加機能３
         
 
         pg.display.update()
