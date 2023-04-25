@@ -64,13 +64,15 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)  #練習４
-        screen.blit(bb_img, bb_rct)  #練習３
         bb_rct.move_ip(vx,vy) #練習３
         yoko, tate = check_bound(screen.get_rect(),bb_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1 
+        screen.blit(bb_img, bb_rct)  #練習３
+        if kk_rct.colliderect(bb_rct): #練習６
+            return
         
         pg.display.update()
         clock.tick(1000)
