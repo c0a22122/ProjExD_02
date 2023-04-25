@@ -6,8 +6,13 @@ delta = {
         pg.K_UP: (0, -1),
         pg.K_DOWN: (0, +1),
         pg.K_LEFT: (-1, 0),
-        pg.K_RIGHT: (+1 ,0)
+        pg.K_RIGHT: (+1 ,0),
+        #pg.K_RIGHT and pg.K_UP: (+1, -1),
+        #pg.K_RIGHT and pg.K_DOWN: (+1, +1),
+        #pg.K_LEFT and pg.K_UP: (-1, -1),
+        #pg.K_LEFT and pg.K_DOWN: (-1, +1)
         }
+
 
 def check_bound(scr_rct:pg.Rect ,obj_rct:pg.Rect) -> tuple[bool, bool]:
     """
@@ -38,9 +43,23 @@ def main():
     kk_rct.center = 900, 400  #練習４
 
     vx, vy = +1, +1  #練習３
+    avx, avy = +1, +1
+
     bb_rct = bb_img.get_rect()  #練習３
     bb_rct.center = x, y  #練習３
     screen.blit(bb_img, [x, y]) #練習２
+
+    accs = [ a for a in range(1, 11)] #加速度のリスト
+
+    #(-1, 0):pg.transform.rotozoom(kk_img,0,1.0),
+    #(-1, +1):pg.transform.rotozoom(kk_img,45,1.0),
+    #(0, +1):pg.transform.rotozoom(kk_img,90,1.0),
+    #(+1, +1):pg.transform.rotozoom(kk_img,135,1.0),
+    #(+1, 0):pg.transform.rotozoom(kk_img,180,1.0),
+    #(+1, -1):pg.transform.rotozoom(kk_img,225,1.0),
+    #(0, -1):pg.transform.rotozoom(kk_img,270,1.0),
+    #(-1, -1):pg.transform.rotozoom(kk_img,315,1.0),
+            
 
 
     tmr = 0
@@ -53,10 +72,13 @@ def main():
 
         tmr += 1
 
+        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]
+
         key_lst = pg.key.get_pressed()  #練習４
         for k, mv in delta.items():  #練習４
             if key_lst[k]:  #練習４
                 kk_rct.move_ip(mv)  #練習４
+                #kk_img = kk_imgs
         if check_bound(screen.get_rect(),kk_rct) != (True,True):
             for k, mv in delta.items(): 
                 if key_lst[k]:  
@@ -64,16 +86,17 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)  #練習４
-        bb_rct.move_ip(vx,vy) #練習３
+        bb_rct.move_ip(avx,avy) #練習３
         yoko, tate = check_bound(screen.get_rect(),bb_rct)
-        if not yoko:
+        if not yoko:  #練習５
             vx *= -1
-        if not tate:
+        if not tate:  #練習５
             vy *= -1 
         screen.blit(bb_img, bb_rct)  #練習３
         if kk_rct.colliderect(bb_rct): #練習６
             return
         
+
         pg.display.update()
         clock.tick(1000)
 
