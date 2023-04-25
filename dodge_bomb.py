@@ -43,7 +43,7 @@ def main():
     kk_rct.center = 900, 400  #練習４
 
     vx, vy = +1, +1  #練習３
-    avx, avy = +1, +1
+    avx, avy = +1, +1  #追加機能2
 
     bb_rct = bb_img.get_rect()  #練習３
     bb_rct.center = x, y  #練習３
@@ -63,7 +63,8 @@ def main():
 
 
     tmr = 0
-
+    overtime = -1
+    gameover = False
 
     while True:
         for event in pg.event.get():
@@ -72,7 +73,7 @@ def main():
 
         tmr += 1
 
-        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]
+        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)]  #追加機能2
 
         key_lst = pg.key.get_pressed()  #練習４
         for k, mv in delta.items():  #練習４
@@ -86,7 +87,7 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)  #練習４
-        bb_rct.move_ip(avx,avy) #練習３
+        bb_rct.move_ip(avx,avy) #練習３ #追加機能２
         yoko, tate = check_bound(screen.get_rect(),bb_rct)
         if not yoko:  #練習５
             vx *= -1
@@ -94,7 +95,14 @@ def main():
             vy *= -1 
         screen.blit(bb_img, bb_rct)  #練習３
         if kk_rct.colliderect(bb_rct): #練習６
-            return
+            kk_img = pg.image.load("ex02/fig/8.png")
+            kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+            gameover = True
+            overtime = tmr
+
+        if gameover == True:
+            if  tmr - overtime > 200:
+                return
         
 
         pg.display.update()
